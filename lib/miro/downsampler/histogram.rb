@@ -29,6 +29,7 @@ module Miro
 
       def parse_result(hstring)
         return nil if hstring.nil?
+
         hstring.scan(/(\d*):.*#([0-9A-Fa-f]*)/).to_h do |match|
           [match[1].to_i(16), match[0].to_i]
         end
