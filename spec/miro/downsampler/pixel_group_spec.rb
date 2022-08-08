@@ -3,9 +3,13 @@
 require "spec_helper"
 
 RSpec.describe Miro::Downsampler::PixelGroup do
-  let(:filepath) { File.join(__dir__, "../../fixtures/test.png") }
-  let(:tempfile) { File.open(filepath) }
+  let(:tempfile) { File.open(File.join(__dir__, "../../fixtures/test.png")) }
   let(:subject) { described_class.new(tempfile) }
+  let(:pixels) { File.read(File.join(__dir__, "../../fixtures/pixels.txt")).split.map(&:to_i) }
+
+  before do
+    allow(subject).to receive(:pixels).and_return(pixels)
+  end
 
   it_behaves_like "downsampler" do
     describe "#pixels" do
@@ -15,12 +19,6 @@ RSpec.describe Miro::Downsampler::PixelGroup do
 
       it "must return an array" do
         expect(subject.pixels).to be_an_instance_of(Array)
-      end
-
-      it "must closde the downsampled tempfile" do
-        expect(subject).to receive(:close_downsampled!)
-        subject.pixels
-        subject.pixels
       end
     end
 
